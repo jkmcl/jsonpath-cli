@@ -1,0 +1,16 @@
+{
+	"string1": "string",
+	"string2": "",
+	"integer": 1,
+	"double1": 1.2,
+	"double2": 1.2e+3,
+	"boolean1": true,
+	"boolean2": false,
+	"null": null,
+	"object": {
+		"name": "adam"
+	},
+	"array": [
+		"value"
+	]
+}
