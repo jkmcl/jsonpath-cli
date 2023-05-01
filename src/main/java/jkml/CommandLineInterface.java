@@ -48,7 +48,7 @@ public class CommandLineInterface {
 		try {
 			cmd = new DefaultParser().parse(options, args);
 		} catch (ParseException e) {
-			printHelp(options);
+			printHelp();
 			return FAILURE;
 		}
 
@@ -67,17 +67,17 @@ public class CommandLineInterface {
 		}
 
 		if (jsonFile == null && json == null) {
-			System.out.println(jsonPathHelper.execute(jsonPath, System.in));
+			System.out.print(jsonPathHelper.execute(jsonPath, System.in));
 		} else if (jsonFile == null) {
-			System.out.println(jsonPathHelper.execute(jsonPath, json));
+			System.out.print(jsonPathHelper.execute(jsonPath, json));
 		} else {
-			System.out.println(jsonPathHelper.execute(jsonPath, Path.of(jsonFile)));
+			System.out.print(jsonPathHelper.execute(jsonPath, Path.of(jsonFile)));
 		}
 
 		return SUCCESS;
 	}
 
-	private static void printHelp(Options options) {
+	private static void printHelp() {
 		var ls = System.lineSeparator();
 		var sb = new StringBuilder();
 
