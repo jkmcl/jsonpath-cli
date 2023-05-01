@@ -2,16 +2,32 @@ A simple command-line tool that evaluates JSONPath using `com.jayway.jsonpath:js
 
 It can be used as a replacement of `jq`.
 
-Usage examples:
+Usage:
 
 ```
-# String input
-java -jar jsonpath-cli.jar -s '{"name":"value"}' -p '$.name'
+java -jar jsonpath-cli.jar -p <JSONPath>
 
-# File input
-java -jar jsonpath-cli.jar -f example.json -p '$.store.book[0].author'
+java -jar jsonpath-cli.jar -p <JSONPath> -s <JSON string>
 
-# Standard input
-cat example.json | java -jar jsonpath-cli.jar -p '$.store.book[0].author'
+java -jar jsonpath-cli.jar -p <JSONPath> -f <JSON file>
+
+```
+
+Arguments `-s` and `-f` are mutually exclusive. JSON is expected from standard input if neither is provided.
+
+Other options:
+
+```
+--pretty  Pretty-print output
+```
+
+Examples:
+
+```
+echo '{"name":"value"}' | java -jar jsonpath-cli.jar -p '$.name'
+
+java -jar jsonpath-cli.jar -p '$.name' -s '{"name":"value"}'
+
+java -jar jsonpath-cli.jar -p '$.name' -f example.json
 
 ```

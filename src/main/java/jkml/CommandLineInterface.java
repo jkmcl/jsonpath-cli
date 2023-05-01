@@ -4,7 +4,6 @@ import java.nio.file.Path;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
@@ -42,8 +41,7 @@ public class CommandLineInterface {
 
 		var options = new Options();
 		options.addOption(jsonPathOption);
-		options.addOptionGroup(new OptionGroup().addOption(jsonFileOption));
-		options.addOptionGroup(new OptionGroup().addOption(jsonStringOption));
+		options.addOptionGroup(new OptionGroup().addOption(jsonFileOption).addOption(jsonStringOption));
 		options.addOption(prettyPrintOption);
 
 		CommandLine cmd;
@@ -80,8 +78,21 @@ public class CommandLineInterface {
 	}
 
 	private static void printHelp(Options options) {
-		var formatter = new HelpFormatter();
-		formatter.printHelp(JsonPathHelper.class.getName(), options);
+		var ls = System.lineSeparator();
+		var sb = new StringBuilder();
+
+		sb.append("Usage:").append(ls).append(ls);
+		sb.append("  java -jar jsonpath-cli.jar -p <JSONPath>").append(ls).append(ls);
+		sb.append("  java -jar jsonpath-cli.jar -p <JSONPath> -s <JSON string>").append(ls).append(ls);
+		sb.append("  java -jar jsonpath-cli.jar -p <JSONPath> -f <JSON file>").append(ls).append(ls);
+
+		sb.append("Arguments -s and -f are mutually exclusive. JSON is expected from standard").append(ls);
+		sb.append("input if neither is provided.").append(ls).append(ls);
+
+		sb.append("Other options:").append(ls).append(ls);
+		sb.append("  --pretty  Pretty-print output").append(ls);
+
+		System.out.print(sb.toString());
 	}
 
 }
