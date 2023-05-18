@@ -88,7 +88,7 @@ public class JsonPathHelper {
 			return "null";
 		}
 		var wrappedObject = JSONObject.wrap(object);
-		int indentFactor = prettyPrint ? 2 : 0;
+		var indentFactor = prettyPrint ? 2 : 0;
 		if (wrappedObject instanceof JSONObject) {
 			return ((JSONObject) wrappedObject).toString(indentFactor);
 		}

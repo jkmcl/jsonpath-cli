@@ -83,7 +83,7 @@ class JsonPathHelperTests {
 
 	private void executeAndLog(String jsonPath, String json) {
 		assertDoesNotThrow(() -> {
-			String result = helper.execute(jsonPath, json);
+			var result = helper.execute(jsonPath, json);
 			log.info("JSONPath: {}", jsonPath);
 			log.info("Result: {}", result);
 		});
