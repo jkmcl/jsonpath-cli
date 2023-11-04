@@ -1,6 +1,6 @@
 A simple command-line tool that evaluates JSONPath using `com.jayway.jsonpath:json-path`.
 
-It can be used as a replacement of `jq`.
+It can be used as a replacement of `jq` in some cases.
 
 Usage:
 
