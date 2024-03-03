@@ -25,7 +25,7 @@ public class CommandLineInterface {
 
 	public int run(String[] args) {
 		try {
-			return runOrThrow(args);
+			return parseAndExecute(args);
 		} catch (Exception e) {
 			System.out.println("Error: " + JsonPathHelper.getRootCauseMessage(e));
 			log.debug(e.getMessage(), e);
@@ -33,7 +33,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	private int runOrThrow(String[] args) {
+	private int parseAndExecute(String[] args) {
 		var jsonPathOption = Option.builder("p").hasArg().desc("JSONPath query expression").required().build();
 		var jsonFileOption = Option.builder("f").hasArg().desc("JSON file").build();
 		var jsonStringOption = Option.builder("s").hasArg().desc("JSON string").build();
