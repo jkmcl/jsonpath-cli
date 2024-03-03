@@ -11,21 +11,21 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CommandLineInterface {
+public class CommandProcessor {
 
 	private static final int SUCCESS = 0;
 
 	private static final int FAILURE = 1;
 
-	private final Logger log = LoggerFactory.getLogger(CommandLineInterface.class);
+	private final Logger log = LoggerFactory.getLogger(CommandProcessor.class);
 
 	public static void main(String[] args) {
-		System.exit(new CommandLineInterface().run(args));
+		System.exit(new CommandProcessor().run(args));
 	}
 
 	public int run(String[] args) {
 		try {
-			return parseAndExecute(args);
+			return parseAndProcess(args);
 		} catch (Exception e) {
 			System.out.println("Error: " + JsonPathHelper.getRootCauseMessage(e));
 			log.debug(e.getMessage(), e);
@@ -33,7 +33,7 @@ public class CommandLineInterface {
 		}
 	}
 
-	private int parseAndExecute(String[] args) {
+	private int parseAndProcess(String[] args) {
 		var jsonPathOption = Option.builder("p").hasArg().desc("JSONPath query expression").required().build();
 		var jsonFileOption = Option.builder("f").hasArg().desc("JSON file").build();
 		var jsonStringOption = Option.builder("s").hasArg().desc("JSON string").build();
