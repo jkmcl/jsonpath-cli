@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.function.Function;
 
 import org.json.JSONArray;
@@ -74,13 +75,18 @@ public class JsonPathHelper {
 		return resultToString(object);
 	}
 
-	static String getRootCauseMessage(Throwable throwable) {
-		var currentCause = throwable;
-		var previousCause = currentCause.getCause();
-		while (previousCause != null && previousCause != currentCause) {
-			currentCause = previousCause;
+	public static String getRootCauseMessage(Throwable throwable) {
+		var rootCause = getRootCause(throwable);
+		return (rootCause == null ? throwable : rootCause).getMessage();
+	}
+
+	private static Throwable getRootCause(Throwable throwable) {
+		var causes = new ArrayList<Throwable>();
+		while (throwable != null && !causes.contains(throwable)) {
+			causes.add(throwable);
+			throwable = throwable.getCause();
 		}
-		return currentCause.getMessage();
+		return causes.isEmpty() ? null : causes.get(causes.size() - 1);
 	}
 
 	private String resultToString(Object object) {
