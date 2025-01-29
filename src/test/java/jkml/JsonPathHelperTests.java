@@ -75,7 +75,7 @@ class JsonPathHelperTests {
 	}
 
 	@Test
-	void prettyPrint() throws Exception {
+	void prettyPrint() {
 		var input = "{\"name1\":\"value1\",\"name2\":\"value2\"}";
 		var output = helper.setPrettyPrint().execute("$", "{\"name1\":\"value1\",\"name2\":\"value2\"}");
 		assertNotEquals(input, output);
