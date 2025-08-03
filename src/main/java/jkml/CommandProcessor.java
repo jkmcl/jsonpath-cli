@@ -34,10 +34,10 @@ public class CommandProcessor {
 	}
 
 	private int parseAndProcess(String[] args) {
-		var jsonPathOption = Option.builder("p").hasArg().desc("JSONPath query expression").required().build();
-		var jsonFileOption = Option.builder("f").hasArg().desc("JSON file").build();
-		var jsonStringOption = Option.builder("s").hasArg().desc("JSON string").build();
-		var prettyPrintOption = Option.builder(null).longOpt("pretty").desc("Pretty printing").optionalArg(true).build();
+		var jsonPathOption = Option.builder("p").hasArg().desc("JSONPath query expression").required().get();
+		var jsonFileOption = Option.builder("f").hasArg().desc("JSON file").get();
+		var jsonStringOption = Option.builder("s").hasArg().desc("JSON string").get();
+		var prettyPrintOption = Option.builder(null).longOpt("pretty").desc("Pretty printing").optionalArg(true).get();
 
 		var options = new Options();
 		options.addOption(jsonPathOption);
