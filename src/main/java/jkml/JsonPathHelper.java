@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.json.JSONArray;
@@ -13,15 +15,48 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.Configuration.Defaults;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.JsonPathException;
 import com.jayway.jsonpath.Option;
 import com.jayway.jsonpath.ParseContext;
+import com.jayway.jsonpath.spi.json.JsonOrgJsonProvider;
+import com.jayway.jsonpath.spi.json.JsonProvider;
+import com.jayway.jsonpath.spi.mapper.JsonOrgMappingProvider;
+import com.jayway.jsonpath.spi.mapper.MappingProvider;
 
 public class JsonPathHelper {
 
-	private static final Configuration CONFIGURATION = Configuration.builder().options(Option.SUPPRESS_EXCEPTIONS).build();
+	private static final Configuration CONFIGURATION;
+
+	static {
+		/**
+		 * Some json-path code creates its own instances of Configuration for internal
+		 * use. Setting the defaults below is the only way to ensure that both our
+		 * instance and the internal instances use org.json:json instead of json-smart.
+		 */
+		Configuration.setDefaults(new Defaults() {
+
+			@Override
+			public JsonProvider jsonProvider() {
+				return new JsonOrgJsonProvider();
+			}
+
+			@Override
+			public MappingProvider mappingProvider() {
+				return new JsonOrgMappingProvider();
+			}
+
+			@Override
+			public Set<Option> options() {
+				return EnumSet.noneOf(Option.class);
+			}
+
+		});
+
+		CONFIGURATION = Configuration.builder().options(Option.SUPPRESS_EXCEPTIONS).build();
+	}
 
 	private final Logger log = LoggerFactory.getLogger(JsonPathHelper.class);
 

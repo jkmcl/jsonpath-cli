@@ -8,12 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
 
 class JsonPathHelperTests {
 
@@ -53,7 +51,7 @@ class JsonPathHelperTests {
 	@Test
 	void successfulResponse() throws Exception {
 		var jsonFile = Path.of("src/test/resources/successful_response.json");
-		var jsonObject = (JSONObject) JSONValue.parse(Files.readString(jsonFile));
+		var jsonObject = new JSONObject(Files.readString(jsonFile));
 		assertEquals(jsonObject.get("access_token"), helper.execute("$.access_token", jsonFile));
 		assertEquals("null", helper.execute("$.error", jsonFile));
 	}
@@ -61,7 +59,7 @@ class JsonPathHelperTests {
 	@Test
 	void errorResponse() throws Exception {
 		var jsonFile = Path.of("src/test/resources/error_response.json");
-		var jsonObject = (JSONObject) JSONValue.parse(Files.readString(jsonFile));
+		var jsonObject = new JSONObject(Files.readString(jsonFile));
 		assertEquals("null", helper.execute("$.access_token", jsonFile));
 		assertEquals(jsonObject.get("error"), helper.execute("$.error", jsonFile));
 	}
