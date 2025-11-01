@@ -1,5 +1,7 @@
 package jkml;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Path;
 
 import org.apache.commons.cli.CommandLine;
@@ -8,6 +10,8 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.help.HelpFormatter;
+import org.apache.commons.cli.help.TextHelpAppendable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,10 +38,10 @@ public class CommandProcessor {
 	}
 
 	private int parseAndProcess(String[] args) {
-		var jsonPathOption = Option.builder("p").hasArg().desc("JSONPath query expression").required().get();
-		var jsonFileOption = Option.builder("f").hasArg().desc("JSON file").get();
-		var jsonStringOption = Option.builder("s").hasArg().desc("JSON string").get();
-		var prettyPrintOption = Option.builder(null).longOpt("pretty").desc("Pretty printing").optionalArg(true).get();
+		var jsonPathOption = Option.builder("p").hasArg().argName("query").desc("JSONPath query expression").required().get();
+		var jsonFileOption = Option.builder("f").hasArg().argName("file").desc("JSON file").get();
+		var jsonStringOption = Option.builder("s").hasArg().argName("string").desc("JSON string").get();
+		var prettyPrintOption = Option.builder(null).longOpt("pretty").desc("Pretty-print output").get();
 
 		var options = new Options();
 		options.addOption(jsonPathOption);
@@ -48,7 +52,7 @@ public class CommandProcessor {
 		try {
 			cmd = new DefaultParser().parse(options, args);
 		} catch (ParseException e) {
-			printHelp();
+			printHelp(options);
 			return FAILURE;
 		}
 
@@ -77,22 +81,22 @@ public class CommandProcessor {
 		return SUCCESS;
 	}
 
-	private static void printHelp() {
-		var ls = System.lineSeparator();
-		var sb = new StringBuilder();
-
-		sb.append("Usage:").append(ls).append(ls);
-		sb.append("  java -jar jsonpath-cli.jar -p <JSONPath>").append(ls).append(ls);
-		sb.append("  java -jar jsonpath-cli.jar -p <JSONPath> -s <JSON string>").append(ls).append(ls);
-		sb.append("  java -jar jsonpath-cli.jar -p <JSONPath> -f <JSON file>").append(ls).append(ls);
-
-		sb.append("Arguments -s and -f are mutually exclusive. JSON is expected from standard").append(ls);
-		sb.append("input if neither is provided.").append(ls).append(ls);
-
-		sb.append("Other options:").append(ls).append(ls);
-		sb.append("  --pretty  Pretty-print output").append(ls);
-
-		System.out.print(sb.toString());
+	private static void printHelp(Options options) {
+		var appendable = new TextHelpAppendable(System.out);
+		appendable.setLeftPad(0);
+		var formatter = HelpFormatter.builder()
+				.setComparator((o1, o2) -> 0)
+				.setHelpAppendable(appendable)
+				.setShowSince(false)
+				.get();
+		formatter.setSyntaxPrefix("Usage:");
+		var syntax = "java -jar jsonpath-cli.jar";
+		var header = "Options -s and -f are mutually exclusive. JSON is expected from standard input if neither is provided.";
+		try {
+			formatter.printHelp(syntax, header, options, "", true);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
+		}
 	}
 
 }
