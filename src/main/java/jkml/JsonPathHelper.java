@@ -31,7 +31,7 @@ public class JsonPathHelper {
 	private static final Configuration CONFIGURATION;
 
 	static {
-		/**
+		/*
 		 * Some json-path code creates its own instances of Configuration for internal
 		 * use. Setting the defaults below is the only way to ensure that both our
 		 * instance and the internal instances use org.json:json instead of json-smart.
