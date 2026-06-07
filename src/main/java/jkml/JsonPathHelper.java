@@ -100,12 +100,11 @@ public class JsonPathHelper {
 			return "Error: JSON parsing: " + getRootCauseMessage(e);
 		}
 
-		Object object;
+		Object object = null;
 		try {
 			object = context.read(path);
 		} catch (JsonPathException e) {
 			log.debug("JSONPath evaluation error", e);
-			object = null;
 		}
 		return resultToString(object);
 	}
@@ -117,9 +116,10 @@ public class JsonPathHelper {
 
 	private static Throwable getRootCause(Throwable throwable) {
 		var causes = new ArrayList<Throwable>();
-		while (throwable != null && !causes.contains(throwable)) {
-			causes.add(throwable);
-			throwable = throwable.getCause();
+		var cause = throwable;
+		while (cause != null && !causes.contains(cause)) {
+			causes.add(cause);
+			cause = cause.getCause();
 		}
 		return causes.isEmpty() ? null : causes.get(causes.size() - 1);
 	}

@@ -21,23 +21,25 @@ public class CommandProcessor {
 
 	private static final int FAILURE = 1;
 
-	private final Logger log = LoggerFactory.getLogger(CommandProcessor.class);
+	private final Logger logger = LoggerFactory.getLogger(CommandProcessor.class);
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
 		System.exit(new CommandProcessor().run(args));
 	}
 
-	public int run(String[] args) {
+	public int run(String... args) {
 		try {
 			return parseAndProcess(args);
 		} catch (Exception e) {
 			System.out.println("Error: " + JsonPathHelper.getRootCauseMessage(e));
-			log.debug(e.getMessage(), e);
+			if (logger.isDebugEnabled()) {
+				logger.debug(e.getMessage(), e);
+			}
 			return FAILURE;
 		}
 	}
 
-	private int parseAndProcess(String[] args) {
+	private int parseAndProcess(String... args) {
 		var jsonPathOption = Option.builder("p").hasArg().argName("query").desc("JSONPath query expression").required().get();
 		var jsonFileOption = Option.builder("f").hasArg().argName("file").desc("JSON file").get();
 		var jsonStringOption = Option.builder("s").hasArg().argName("string").desc("JSON string").get();
@@ -60,13 +62,13 @@ public class CommandProcessor {
 		var jsonFile = cmd.getOptionValue(jsonFileOption);
 		var json = cmd.getOptionValue(jsonStringOption);
 
-		log.debug("JSONPath: {}", jsonPath);
-		log.debug("JSON file: {}", jsonFile);
-		log.debug("JSON string: {}", json);
+		logger.debug("JSONPath: {}", jsonPath);
+		logger.debug("JSON file: {}", jsonFile);
+		logger.debug("JSON string: {}", json);
 
 		var jsonPathHelper = new JsonPathHelper();
 		if (cmd.hasOption(prettyPrintOption)) {
-			log.debug("Pretty printing enabled");
+			logger.debug("Pretty printing enabled");
 			jsonPathHelper.setPrettyPrint();
 		}
 

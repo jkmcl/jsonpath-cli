@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ruleset name="Custom Rules"
+	xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+	<description>Custom rules</description>
+
+	<rule ref="category/java/bestpractices.xml">
+		<exclude name="SystemPrintln" />
+	</rule>
+
+	<rule ref="category/java/codestyle.xml">
+		<exclude name="AtLeastOneConstructor" />
+		<exclude name="CallSuperInConstructor" />
+		<exclude name="CommentDefaultAccessModifier" />
+		<exclude name="FieldNamingConventions" />
+		<exclude name="LinguisticNaming" />
+		<exclude name="LocalVariableCouldBeFinal" />
+		<exclude name="LongVariable" />
+		<exclude name="MethodArgumentCouldBeFinal" />
+		<exclude name="OnlyOneReturn" />
+		<exclude name="ShortVariable" />
+		<exclude name="UseExplicitTypes" />
+		<exclude name="UseUnderscoresInNumericLiterals" />
+	</rule>
+
+	<rule ref="category/java/design.xml">
+		<exclude name="LoosePackageCoupling" />
+	</rule>
+
+	<rule ref="category/java/documentation.xml">
+		<exclude name="CommentRequired" />
+		<exclude name="CommentSize" />
+	</rule>
+
+	<rule ref="category/java/errorprone.xml" />
+
+	<rule ref="category/java/errorprone.xml/AvoidCatchingGenericException">
+		<properties>
+			<property name="typesThatShouldNotBeCaught" value="java.lang.NullPointerException,java.lang.RuntimeException,java.lang.Throwable,java.lang.Error" />
+		</properties>
+	</rule>
+
+	<rule ref="category/java/multithreading.xml" />
+
+	<rule ref="category/java/performance.xml">
+		<exclude name="RedundantFieldInitializer" />
+	</rule>
+
+	<rule ref="category/java/security.xml" />
+
+</ruleset>
